@@ -102,7 +102,6 @@ public class PokemonMenuGUI extends JFrame{
         }
         public void mousePressed (MouseEvent event) {}
         public void mouseReleased (MouseEvent event) {
-            //set all the colors of the "buttons" to grey
             textColours[0] = defaultGrey;
             textColours[1] = defaultGrey;
             textColours[2] = defaultGrey;
@@ -159,7 +158,7 @@ public class PokemonMenuGUI extends JFrame{
 
             g.setColor(textColours[1]); //default is grey (180, 180, 180)
             g.drawPolygon(new Polygon(bottomLeftFileXY[0], bottomLeftFileXY[1], bottomLeftFileXY[0].length));
-            g.drawString("INFORMATION", 90, 460);
+            g.drawString("INFORMATION", 100, 460);
 
             g.setColor(textColours[2]); //default is grey (180, 180, 180)
             g.drawPolygon(new Polygon(topRightFileXY[0], topRightFileXY[1], topRightFileXY[0].length));

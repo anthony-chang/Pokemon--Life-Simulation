@@ -383,11 +383,11 @@ class Environment{
     private BufferedImage gastly;
     private BufferedImage backgroundImg;
     //stores all the relevant properties of each pokemon
-    private ArrayList<Structure2> treeLoc; //(y,x)
-    public ArrayList <Structure6> beeLoc; //(y, x, destination y, destination x, find new tree?, health)
-    public ArrayList <Structure5> squirtleLoc; //(y, x, destination y, destination x, health)
-    public ArrayList <Structure7> growLoc; //(y, x, speed y, speed x, general direction, wait time, health)
-    public ArrayList <Structure5> gasLoc; //(y, x, destination y, destination x, health)
+    private ArrayList<pii> treeLoc; //(y,x)
+    public ArrayList <piiiiii> beeLoc; //(y, x, destination y, destination x, find new tree?, health)
+    public ArrayList <piiiii> squirtleLoc; //(y, x, destination y, destination x, health)
+    public ArrayList <piiiiiii> growLoc; //(y, x, speed y, speed x, general direction, wait time, health)
+    public ArrayList <piiiii> gasLoc; //(y, x, destination y, destination x, health)
 
     private boolean[][][] pos = new boolean[271][181][4]; //col (x), rows (y),
     // pokemon (0=beedrill, 1=squirtle, 2=growlithe, 3=gastly)
@@ -401,31 +401,31 @@ class Environment{
 
     public Environment() { //default randomly generated colony
         //initializes ArrayLists
-        treeLoc = new ArrayList<Structure2>();
-        beeLoc = new ArrayList<Structure6>();
-        squirtleLoc = new ArrayList<Structure5>();
-        growLoc = new ArrayList<Structure7>();
-        gasLoc = new ArrayList<Structure5>();
+        treeLoc = new ArrayList<pii>();
+        beeLoc = new ArrayList<piiiiii>();
+        squirtleLoc = new ArrayList<piiiii>();
+        growLoc = new ArrayList<piiiiiii>();
+        gasLoc = new ArrayList<piiiii>();
 
         //generates beedrills
         for (int i=0; i<15; i++) {
             int a = (int) (Math.random() * 174);
             int b = (int) (Math.random() * 254);
-            beeLoc.add(new Structure6(a, b, a, b, true, (int) (Math.random()*81)+20));
+            beeLoc.add(new piiiiii(a, b, a, b, true, (int) (Math.random()*81)+20));
         }
 
         //generates squirtles
         for (int i=0; i<7; i++) {
             int randomx = (int) (Math.random()*251);
             int randomy = (int) (Math.random()*161);
-            squirtleLoc.add(new Structure5(randomy, randomx, randomy, randomx, (int) (Math.random()*41)+60));
+            squirtleLoc.add(new piiiii(randomy, randomx, randomy, randomx, (int) (Math.random()*41)+60));
         }
 
         //generates gastly
         for (int i=0; i<4; i++) {
             int randomx = (int) (Math.random() * 254);
             int randomy = (int) (Math.random() * 174);
-            gasLoc.add(new Structure5(randomy, randomx, 90, 135, (int) (Math.random()*21)+80));
+            gasLoc.add(new piiiii(randomy, randomx, 90, 135, (int) (Math.random()*21)+80));
         }
 
         //generates default grid
@@ -454,7 +454,7 @@ class Environment{
 
             //stores the trees into an ArrayList
             if (!treeLoc.isEmpty()){
-                for (Structure2 e: treeLoc){
+                for (pii e: treeLoc){
                     avgy+=e.first;
                     avgx+=e.first;
                 }
@@ -482,7 +482,7 @@ class Environment{
                 if (!grid[ytree][xtree].isLake() && !grid[ytree + 10][xtree + 10].isLake() &&
                         !grid[ytree + 10][xtree].isLake() && !grid[ytree][xtree + 10].isLake()) {
                     //g.drawImage(tree, 4 * xtree, 4 * ytree, 40, 40, null);
-                    treeLoc.add(new Structure2(ytree,xtree));
+                    treeLoc.add(new pii(ytree,xtree));
                 }
             } catch (ArrayIndexOutOfBoundsException e){
             }
@@ -542,7 +542,7 @@ class Environment{
                 }
             }
             if (not){
-                growLoc.add(new Structure7(a, b, (int) (Math.random() * 2+2), (int) (Math.random() * 2 + 2), 0, 3, (int) (Math.random()*81)+20));
+                growLoc.add(new piiiiiii(a, b, (int) (Math.random() * 2+2), (int) (Math.random() * 2 + 2), 0, 3, (int) (Math.random()*81)+20));
                 growi++;
             }
         }
@@ -558,37 +558,37 @@ class Environment{
             //ensures the growlithe appear outside the edge of the screen
             try{
                 if (a < -5 && b >= 90){
-                    growLoc.add(new Structure7(b, a, -(int) (Math.random() * 3+2), (int) (Math.random() * 3 + 2), 0, 2, (int) (Math.random()*81)+20));
+                    growLoc.add(new piiiiiii(b, a, -(int) (Math.random() * 3+2), (int) (Math.random() * 3 + 2), 0, 2, (int) (Math.random()*81)+20));
                     growi++;
                 }
                 else if (a < -5 && b < 90){
-                    growLoc.add(new Structure7(b, a, (int) (Math.random() * 3+2), (int) (Math.random() * 3 + 2), 0, 1, (int) (Math.random()*81)+20));
+                    growLoc.add(new piiiiiii(b, a, (int) (Math.random() * 3+2), (int) (Math.random() * 3 + 2), 0, 1, (int) (Math.random()*81)+20));
                     growi++;
                 }
                 else if (b < -5 && a >= 135){
-                    growLoc.add(new Structure7(b, a, (int) (Math.random() * 3+2), -(int) (Math.random() * 3 + 2), 0, 0, (int) (Math.random()*81)+20));
+                    growLoc.add(new piiiiiii(b, a, (int) (Math.random() * 3+2), -(int) (Math.random() * 3 + 2), 0, 0, (int) (Math.random()*81)+20));
                     growi++;
                 }
                 else if (b < -5 && a < 135){
-                    growLoc.add(new Structure7(b, a, (int) (Math.random() * 3+2), (int) (Math.random() * 3 + 2), 0, 1, (int) (Math.random()*81)+20));
+                    growLoc.add(new piiiiiii(b, a, (int) (Math.random() * 3+2), (int) (Math.random() * 3 + 2), 0, 1, (int) (Math.random()*81)+20));
                     growi++;
                 }
                 else if (a > 270 && b >=90){
-                    growLoc.add(new Structure7(b, a, -(int) (Math.random() * 3+2), -(int) (Math.random() * 3 + 2), 0, 3, (int) (Math.random()*81)+20));
+                    growLoc.add(new piiiiiii(b, a, -(int) (Math.random() * 3+2), -(int) (Math.random() * 3 + 2), 0, 3, (int) (Math.random()*81)+20));
                     growi++;
                 }
                 else if (a > 270 && b < 90){
-                    growLoc.add(new Structure7(b, a, (int) (Math.random() * 3+2), -(int) (Math.random() * 3 + 2), 0, 0, (int) (Math.random()*81)+20));
+                    growLoc.add(new piiiiiii(b, a, (int) (Math.random() * 3+2), -(int) (Math.random() * 3 + 2), 0, 0, (int) (Math.random()*81)+20));
                     growi++;
 
                 }
                 else if (b > 180 && a >= 135){
-                    growLoc.add(new Structure7(b, a, -(int) (Math.random() * 3+2), -(int) (Math.random() * 3 + 2), 0, 3, (int) (Math.random()*81)+20));
+                    growLoc.add(new piiiiiii(b, a, -(int) (Math.random() * 3+2), -(int) (Math.random() * 3 + 2), 0, 3, (int) (Math.random()*81)+20));
                     growi++;
 
                 }
                 else if (b > 180 && a < 135){
-                    growLoc.add(new Structure7(b, a, -(int) (Math.random() * 3+2), (int) (Math.random() * 3 + 2), 0, 2, (int) (Math.random()*81)+20));
+                    growLoc.add(new piiiiiii(b, a, -(int) (Math.random() * 3+2), (int) (Math.random() * 3 + 2), 0, 2, (int) (Math.random()*81)+20));
                     growi++;
 
                 }
@@ -606,37 +606,37 @@ class Environment{
             //ensures the growlithe appear outside the edge of the screen
             try{
                 if (a < -5 && b >= 90){
-                    squirtleLoc.add(new Structure5(b, a, randomy, randomx, (int) (Math.random()*21)+80));
+                    squirtleLoc.add(new piiiii(b, a, randomy, randomx, (int) (Math.random()*21)+80));
                     cont++;
                 }
                 else if (a < -5 && b < 90){
-                    squirtleLoc.add(new Structure5(b, a, randomy, randomx, (int) (Math.random()*21)+80));
+                    squirtleLoc.add(new piiiii(b, a, randomy, randomx, (int) (Math.random()*21)+80));
                     cont++;
                 }
                 else if (b < -5 && a >= 135){
-                    squirtleLoc.add(new Structure5(b, a, randomy, randomx, (int) (Math.random()*21)+80));
+                    squirtleLoc.add(new piiiii(b, a, randomy, randomx, (int) (Math.random()*21)+80));
                     cont++;
                 }
                 else if (b < -5 && a < 135){
-                    squirtleLoc.add(new Structure5(b, a, randomy, randomx, (int) (Math.random()*21)+80));
+                    squirtleLoc.add(new piiiii(b, a, randomy, randomx, (int) (Math.random()*21)+80));
                     cont++;
                 }
                 else if (a > 270 && b >=90){
-                    squirtleLoc.add(new Structure5(b, a, randomy, randomx, (int) (Math.random()*21)+80));
+                    squirtleLoc.add(new piiiii(b, a, randomy, randomx, (int) (Math.random()*21)+80));
                     cont++;
                 }
                 else if (a > 270 && b < 90){
-                    squirtleLoc.add(new Structure5(b, a, randomy, randomx, (int) (Math.random()*21)+80));
+                    squirtleLoc.add(new piiiii(b, a, randomy, randomx, (int) (Math.random()*21)+80));
                     cont++;
 
                 }
                 else if (b > 180 && a >= 135){
-                    squirtleLoc.add(new Structure5(b, a, randomy, randomx, (int) (Math.random()*21)+80));
+                    squirtleLoc.add(new piiiii(b, a, randomy, randomx, (int) (Math.random()*21)+80));
                     cont++;
 
                 }
                 else if (b > 180 && a < 135){
-                    squirtleLoc.add(new Structure5(b, a, randomy, randomx, (int) (Math.random()*21)+80));
+                    squirtleLoc.add(new piiiii(b, a, randomy, randomx, (int) (Math.random()*21)+80));
                     cont++;
 
                 }
@@ -652,37 +652,37 @@ class Environment{
             //ensures the growlithe appear outside the edge of the screen
             try{
                 if (a < -5 && b >= 90){
-                    beeLoc.add(new Structure6(a, b, a, b, true, (int) (Math.random()*81)+20));
+                    beeLoc.add(new piiiiii(a, b, a, b, true, (int) (Math.random()*81)+20));
                     cont++;
                 }
                 else if (a < -5 && b < 90){
-                    beeLoc.add(new Structure6(a, b, a, b, true, (int) (Math.random()*81)+20));
+                    beeLoc.add(new piiiiii(a, b, a, b, true, (int) (Math.random()*81)+20));
                     cont++;
                 }
                 else if (b < -5 && a >= 135){
-                    beeLoc.add(new Structure6(a, b, a, b, true, (int) (Math.random()*81)+20));
+                    beeLoc.add(new piiiiii(a, b, a, b, true, (int) (Math.random()*81)+20));
                     cont++;
                 }
                 else if (b < -5 && a < 135){
-                    beeLoc.add(new Structure6(a, b, a, b, true, (int) (Math.random()*81)+20));
+                    beeLoc.add(new piiiiii(a, b, a, b, true, (int) (Math.random()*81)+20));
                     cont++;
                 }
                 else if (a > 270 && b >=90){
-                    beeLoc.add(new Structure6(a, b, a, b, true, (int) (Math.random()*81)+20));
+                    beeLoc.add(new piiiiii(a, b, a, b, true, (int) (Math.random()*81)+20));
                     cont++;
                 }
                 else if (a > 270 && b < 90){
-                    beeLoc.add(new Structure6(a, b, a, b, true, (int) (Math.random()*81)+20));
+                    beeLoc.add(new piiiiii(a, b, a, b, true, (int) (Math.random()*81)+20));
                     cont++;
 
                 }
                 else if (b > 180 && a >= 135){
-                    beeLoc.add(new Structure6(a, b, a, b, true, (int) (Math.random()*81)+20));
+                    beeLoc.add(new piiiiii(a, b, a, b, true, (int) (Math.random()*81)+20));
                     cont++;
 
                 }
                 else if (b > 180 && a < 135){
-                    beeLoc.add(new Structure6(a, b, a, b, true, (int) (Math.random()*81)+20));
+                    beeLoc.add(new piiiiii(a, b, a, b, true, (int) (Math.random()*81)+20));
                     cont++;
 
                 }
@@ -723,7 +723,7 @@ class Environment{
             }
         }
         //displays trees
-        for (Structure2 treeArr : treeLoc) {
+        for (pii treeArr : treeLoc) {
             try {
                 g.drawImage(tree, 4 * treeArr.second, 4 * treeArr.first, 40, 40, null);
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -768,7 +768,7 @@ class Environment{
 
         //updates beedrill
         //loops through each beedrill in ArrayList
-        for (Structure6 bees: beeLoc) {
+        for (piiiiii bees: beeLoc) {
             int bestw = 0, bestv = 0;
             int xx = treeLoc.get(0).second, yy = treeLoc.get(0).first;
 
@@ -784,7 +784,7 @@ class Environment{
 
             if (!bees.fifth){
                 //finds new closest tree that is not the one it was approaching
-                for (Structure2 tt : treeLoc) {
+                for (pii tt : treeLoc) {
                     if (Math.abs(tt.second - bees.second) + Math.abs(tt.first - bees.first) <
                             Math.abs(xx - bees.second) + Math.abs(yy - bees.first) && tt.second!=bees.fourth &&
                             tt.first!=bees.third) {
@@ -817,7 +817,7 @@ class Environment{
             }
             else {
                 //finds closest tree
-                for (Structure2 tt : treeLoc) {
+                for (pii tt : treeLoc) {
                     if (Math.abs(tt.second - bees.second) + Math.abs(tt.first - bees.first) <
                             Math.abs(xx - bees.second) + Math.abs(yy - bees.first)) {
                         xx = tt.second;
@@ -859,7 +859,7 @@ class Environment{
 
         //updates squirtle
         //loops through each squirtle in ArrayList
-        for (Structure5 sq : squirtleLoc) {
+        for (piiiii sq : squirtleLoc) {
             int randomx, randomy;
             //if it is close to its destination, it finds a new location
             if (Math.abs(sq.second - sq.fourth)+Math.abs(sq.first-sq.third) < 10) {
@@ -898,13 +898,13 @@ class Environment{
         //updates growlithe
         //loops through each growlithe in ArrayList
         int removei = -1;
-        for (Structure7 grow : growLoc) {
+        for (piiiiiii grow : growLoc) {
             removei++;
             int avgx=0, avgy=0, speedx=0, speedy=0;
             int cont = 0;
 
             //finds average location of growlithe
-            for (Structure7 tt : growLoc) {
+            for (piiiiiii tt : growLoc) {
                 if (Math.abs(tt.second-grow.second)+Math.abs(tt.first-grow.first)<100){
                     avgx+=tt.second;
                     avgy+=tt.first;
@@ -934,7 +934,7 @@ class Environment{
 
             //prevents from moving too close to other growlithe
             double xshift=0, yshift=0;
-            for (Structure7 tt : growLoc) {
+            for (piiiiiii tt : growLoc) {
                 if (Math.abs(tt.second-grow.second)+Math.abs(tt.first-grow.first)<15){
                     if (grow.second > tt.second) xshift+=5/(grow.second-tt.second+1);
                     if (grow.second < tt.second) xshift-=5/(tt.second-grow.second+1);
@@ -1051,7 +1051,7 @@ class Environment{
 
         //updates gastly
         //loops through each gastly in the ArrayList
-        for (Structure5 gas : gasLoc) {
+        for (piiiii gas : gasLoc) {
             int genRandom;
             //gastly are assigned a random location to move to
             if (Math.abs(gas.second-gas.fourth) + Math.abs(gas.first - gas.third) < 12){
@@ -1080,21 +1080,21 @@ class Environment{
 
             //finds average of all pokemon within a certain range
             int avgtotx=0, avgtoty=0, cont = 0;
-            for (Structure6 bees: beeLoc){
+            for (piiiiii bees: beeLoc){
                 if (Math.sqrt(Math.pow(gas.first-bees.first, 2)+Math.pow(gas.second-bees.second, 2)) < 20){
                     cont++;
                     avgtotx+=bees.second;
                     avgtoty+=bees.first;
                 }
             }
-            for (Structure5 sq: squirtleLoc){
+            for (piiiii sq: squirtleLoc){
                 if (Math.sqrt(Math.pow(gas.first-sq.first, 2)+Math.pow(gas.second-sq.second, 2)) < 20){
                     cont++;
                     avgtotx+=sq.second;
                     avgtoty+=sq.first;
                 }
             }
-            for (Structure7 gr: growLoc){
+            for (piiiiiii gr: growLoc){
                 if (Math.sqrt(Math.pow(gas.first-gr.first, 2)+Math.pow(gas.second-gr.second, 2)) < 20){
                     cont++;
                     avgtotx+=gr.second;
@@ -1116,25 +1116,25 @@ class Environment{
             gas.second+=Math.round((randMovex+0.0)/200);
 
             //if it is extremely close to any pokemon, move away
-            for (Structure6 bees: beeLoc){
+            for (piiiiii bees: beeLoc){
                 if (Math.sqrt(Math.pow(gas.first-bees.first, 2)+Math.pow(gas.second-bees.second, 2)) < 5){
                     gas.second-=(bees.second-gas.second)*(5/(Math.sqrt(Math.pow(gas.first-bees.first, 2)+Math.pow(gas.second-bees.second, 2))+1));
                     gas.first-=(bees.first-gas.first)*(5/(Math.sqrt(Math.pow(gas.first-bees.first, 2)+Math.pow(gas.second-bees.second, 2))+1));
                 }
             }
-            for (Structure5 sq: squirtleLoc){
+            for (piiiii sq: squirtleLoc){
                 if (Math.sqrt(Math.pow(gas.first-sq.first, 2)+Math.pow(gas.second-sq.second, 2)) < 5){
                     gas.second-=(sq.second-gas.second)*(5/(Math.sqrt(Math.pow(gas.first-sq.first, 2)+Math.pow(gas.second-sq.second, 2))+1));
                     gas.first-=(sq.first-gas.first)*(5/(Math.sqrt(Math.pow(gas.first-sq.first, 2)+Math.pow(gas.second-sq.second, 2))+1));
                 }
             }
-            for (Structure7 gr: growLoc) {
+            for (piiiiiii gr: growLoc) {
                 if (Math.sqrt(Math.pow(gas.first - gr.first, 2) + Math.pow(gas.second - gr.second, 2)) < 5) {
                     gas.second -= (gr.second - gas.second) * (5 / (Math.sqrt(Math.pow(gas.first - gr.first, 2) + Math.pow(gas.second - gr.second, 2)) + 1));
                     gas.first -= (gr.first - gas.first) * (5 / (Math.sqrt(Math.pow(gas.first - gr.first, 2) + Math.pow(gas.second - gr.second, 2)) + 1));
                 }
             }
-            for (Structure5 gass: gasLoc) {
+            for (piiiii gass: gasLoc) {
                 if (Math.sqrt(Math.pow(gas.first - gass.first, 2) + Math.pow(gas.second - gass.second, 2)) < 5) {
                     gas.second -= (gass.second - gas.second) * (5 / (Math.sqrt(Math.pow(gas.first - gass.first, 2) + Math.pow(gas.second - gass.second, 2)) + 1));
                     gas.first -= (gass.first - gas.first) * (5 / (Math.sqrt(Math.pow(gas.first - gass.first, 2) + Math.pow(gas.second - gass.second, 2)) + 1));
@@ -1143,7 +1143,25 @@ class Environment{
         }
         counter++;
 
-        for (Structure2 treeArr : treeLoc) {
+
+        //HOW TO GET X, Y COORDS OF PLAYER (1080 x 720)
+        //System.out.println(Pokemon.player.getX()+", "+ Pokemon.player.getY());
+
+
+        //EXAMPLE OF HOW TO ADD POKEMON (addPokeToInventory returns false if the inventory is full, and true if it successfully adds)
+        //Pokemon.inventoryWindow.addPokeToInventory(2); //adds a squirtle
+
+        //numbers that correspond to what pokemon
+        /*
+        if (type == 1) name = "Dragonair";
+        else if (type == 2) name = "Squirtle";
+        else if (type == 3) name = "Beedrill";
+        else if (type == 4) name = "Growlithe";
+        else if (type == 5) name = "Nidoran";
+        else if (type == 6) name = "Gastly";
+         */
+
+        for (pii treeArr : treeLoc) {
             try {
                 g.drawImage(tree, 4 * treeArr.second, 4 * treeArr.first, 40, 40, null);
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -1156,28 +1174,22 @@ class Environment{
         ArrayList<Integer> deadGas = new ArrayList<>();
 
         //catching pokemon
-        //gets location of user
         int xPlayer = Pokemon.player.getX()/4;
         int yPlayer = Pokemon.player.getY()/4;
-
-        //checks all pokemon within a small distance of the player
+        //System.out.printf("%d %d\n", yPlayer, xPlayer);
         int cont = 0;
         int random;
-        for (Structure6 bees: beeLoc) {
-            //have a certain percentage of catching the pokemon based on health
+        for (piiiiii bees: beeLoc) {
             random = (int) (Math.random()*11)*(int)(Math.sqrt(bees.health));
             if (random < 5 && Math.abs(bees.first-yPlayer) <= 4 && Math.abs(bees.second-xPlayer) <= 4){
                 if (Pokemon.inventoryWindow.addPokeToInventory(3, bees.health)){
                     deadBeedrills.add(cont);
                 }
             }
-            //records indices of pokemon to be removed as they are now in the inventory
             cont++;
         }
         cont = 0;
-
-        //repeat for each pokemon
-        for (Structure5 sq: squirtleLoc) {
+        for (piiiii sq: squirtleLoc) {
             random = (int) (Math.random()*11)*(int)(Math.sqrt(sq.health));
             if (random < 5 && Math.abs(sq.first-yPlayer) <= 4 && Math.abs(sq.second-xPlayer) <= 4){
                 if (Pokemon.inventoryWindow.addPokeToInventory(2, sq.health)){
@@ -1187,7 +1199,7 @@ class Environment{
             cont++;
         }
         cont = 0;
-        for (Structure7 grow: growLoc) {
+        for (piiiiiii grow: growLoc) {
             random = (int) (Math.random()*11)*(int)(Math.sqrt(grow.health));
             if (random < 5 && Math.abs(grow.first-yPlayer) <= 4 && Math.abs(grow.second-xPlayer) <= 4){
                 if (Pokemon.inventoryWindow.addPokeToInventory(4, grow.health)){
@@ -1197,7 +1209,7 @@ class Environment{
             cont++;
         }
         cont = 0;
-        for (Structure5 gas: gasLoc) {
+        for (piiiii gas: gasLoc) {
             random = (int) (Math.random()*11)*(int)(Math.sqrt(gas.health));
             if (random < 5 && Math.abs(gas.first-yPlayer) <= 4 && Math.abs(gas.second-xPlayer) <= 4){
                 if (Pokemon.inventoryWindow.addPokeToInventory(6, gas.health)){
@@ -1208,7 +1220,6 @@ class Environment{
         }
 
 
-        //removes pokemon from stored values in ArrayList
         for (int i=deadBeedrills.size()-1; i>=0; i--){
             int p = deadBeedrills.get(i);
             g.setColor(Color.GREEN);
@@ -1257,22 +1268,22 @@ class Environment{
 
         //update to find all of the positions of current the pokemon
         //need to try catch to ignore pokemon off the screen
-        for (Structure6 bees: beeLoc) {
+        for (piiiiii bees: beeLoc) {
             try {
                 pos[bees.second][bees.first][0] = true;
             }catch (ArrayIndexOutOfBoundsException ignored) {}
         }
-        for (Structure5 sq: squirtleLoc) {
+        for (piiiii sq: squirtleLoc) {
             try {
                 pos[sq.second][sq.first][1] = true;
             }catch (ArrayIndexOutOfBoundsException ignored) {}
         }
-        for (Structure7 grow: growLoc) {
+        for (piiiiiii grow: growLoc) {
             try {
                 pos[grow.second][grow.first][2] = true;
             }catch (ArrayIndexOutOfBoundsException ignored) {}
         }
-        for (Structure5 gas: gasLoc) {
+        for (piiiii gas: gasLoc) {
             try {
                 //System.out.println(gas.second+", "+gas.first);
                 pos[gas.second][gas.first][3] = true;
@@ -1281,9 +1292,9 @@ class Environment{
         }
         //stores the indexes of dead pokemon
         int ind = 0; //index of the for each loop
-        for (Structure6 bees: beeLoc) {
+        for (piiiiii bees: beeLoc) {
             for (int i = 1; i < 4; i++) { //all other pokemon besides bees
-                try { //if other pokemon occupy the same square
+                try {
                     if (pos[bees.second - 1][bees.first + 1][i]||pos[bees.second][bees.first + 1][i]||pos[bees.second + 1][bees.first + 1][i]||
                             pos[bees.second - 1][bees.first    ][i]||pos[bees.second][bees.first    ][i]||pos[bees.second + 1][bees.first    ][i]||
                             pos[bees.second - 1][bees.first - 1][i]||pos[bees.second][bees.first - 1][i]||pos[bees.second + 1][bees.first - 1][i]) {
@@ -1292,7 +1303,7 @@ class Environment{
                 } catch (ArrayIndexOutOfBoundsException ignored){}
             }
             if (bees.health <= 0) {
-                deadBeedrills.add(ind); //list of dead beedrills
+                deadBeedrills.add(ind);
             }
             else {
                 g.drawImage(beedrill, 4 * bees.second, 4 * bees.first, 20, 20, null);
@@ -1303,7 +1314,6 @@ class Environment{
             }
             ind++;
         }
-        //remove all of the beedrills that had less 0 health
         for (int i1 = deadBeedrills.size() - 1; i1 >= 0; i1--) {
             int i = deadBeedrills.get(i1);//remove the dead pokemon
             g.setColor(Color.RED);
@@ -1311,11 +1321,10 @@ class Environment{
             beeLoc.remove(i);
         }
 
-        //repeat the same for squirtles
         ind  = 0;
-        for (Structure5 sq: squirtleLoc) {
+        for (piiiii sq: squirtleLoc) {
             for (int i = 0; i < 4; i++) {
-                try { //if other pokemon occupy the same square
+                try {
                     if (pos[sq.second - 1][sq.first + 1][i]||pos[sq.second][sq.first + 1][i]||pos[sq.second + 1][sq.first + 1][i]||
                             pos[sq.second - 1][sq.first    ][i]||pos[sq.second][sq.first    ][i]||pos[sq.second + 1][sq.first    ][i]||
                             pos[sq.second - 1][sq.first - 1][i]||pos[sq.second][sq.first - 1][i]||pos[sq.second + 1][sq.first - 1][i]) {
@@ -1324,7 +1333,7 @@ class Environment{
                 } catch (ArrayIndexOutOfBoundsException ignored) {}
             }
             if (sq.health <= 0) {
-                deadSquirtle.add(ind); //list of dead squirtles
+                deadSquirtle.add(ind);
             }
             else {
                 g.drawImage(squirtle, 4 * sq.second, 4 * sq.first, 20, 20, null);
@@ -1335,7 +1344,6 @@ class Environment{
             }
             ind++;
         }
-        //remove all of the squirtles with less than 0 health
         for (int i1 = deadSquirtle.size() - 1; i1 >= 0; i1--) {
             int i = deadSquirtle.get(i1);//remove the dead pokemon
             g.setColor(Color.RED);
@@ -1343,11 +1351,10 @@ class Environment{
             squirtleLoc.remove(i);
         }
 
-        //repeat the same for growlithes
         ind = 0;
-        for (Structure7 grow: growLoc) {
+        for (piiiiiii grow: growLoc) {
             for (int i = 0; i < 4; i++) {
-                try { //if other pokemon occupy the same square
+                try {
                     if (pos[grow.second - 1][grow.first + 1][i]||pos[grow.second][grow.first + 1][i]||pos[grow.second + 1][grow.first + 1][i]||
                             pos[grow.second - 1][grow.first    ][i]||pos[grow.second][grow.first    ][i]||pos[grow.second + 1][grow.first    ][i]||
                             pos[grow.second - 1][grow.first - 1][i]||pos[grow.second][grow.first - 1][i]||pos[grow.second + 1][grow.first - 1][i]) {
@@ -1356,7 +1363,7 @@ class Environment{
                 } catch (ArrayIndexOutOfBoundsException ignored) {}
             }
             if (grow.health <= 0) {
-                deadGrow.add(ind); //add to a list of dead growlithes
+                deadGrow.add(ind);
             }
             else {
                 g.drawImage(growlithe, 4 * grow.second, 4 * grow.first, 25, 25, null);
@@ -1367,7 +1374,6 @@ class Environment{
             }
             ind++;
         }
-        //remove all of the growlithes with less than 0 health
         for (int i1 = deadGrow.size() - 1; i1 >= 0; i1--) {
             int i = deadGrow.get(i1);//remove the dead pokemon
             g.setColor(Color.RED);
@@ -1375,11 +1381,10 @@ class Environment{
             growLoc.remove(i);
         }
 
-        //repeat the same thing for gastlys
         ind = 0;
-        for (Structure5 gas: gasLoc) {
+        for (piiiii gas: gasLoc) {
             for (int i = 0; i < 4; i++) {
-                try {//if other pokemon occupy the same square
+                try {
                     if (pos[gas.second - 1][gas.first + 1][i]||pos[gas.second][gas.first + 1][i]||pos[gas.second + 1][gas.first + 1][i]||
                             pos[gas.second - 1][gas.first    ][i]||pos[gas.second][gas.first    ][i]||pos[gas.second + 1][gas.first    ][i]||
                             pos[gas.second - 1][gas.first - 1][i]||pos[gas.second][gas.first - 1][i]||pos[gas.second + 1][gas.first - 1][i]) {
@@ -1389,7 +1394,7 @@ class Environment{
             }
 
             if (gas.health <= 0) {
-                deadGas.add(ind); //add to list of dead gastlys
+                deadGas.add(ind);
             }
             else {
                 g.drawImage(gastly, 4 * gas.second, 4 * gas.first, 20, 20, null);
@@ -1400,7 +1405,6 @@ class Environment{
             }
             ind++;
         }
-        //remove all of the gastly with less than 0 health
         for (int i1 = deadGas.size() - 1; i1 >= 0; i1--) {
             int i = deadGas.get(i1);//remove the dead pokemon
             g.setColor(Color.RED);
@@ -1523,7 +1527,7 @@ class Environment{
             }
         }
 
-        //assigns colour to the part between the created border
+        //asigns colour to the part between the created border
         for (int i=0; i<d; i++){
             int j = 0;
             while (loc[j][i]==0){
@@ -1566,7 +1570,6 @@ class Environment{
 }
 
 //colour class
-//elements in the environment/background are color coded
 class Colour {
     int red, green, blue;
 
@@ -1575,6 +1578,18 @@ class Colour {
         red = (int) (Math.random()*256);
         green = (int) (Math.random()*256);
         blue = (int) (Math.random()*256);
+    }
+
+    public void setBlack(){
+        red = 0;
+        green = 0;
+        blue = 0;
+    }
+
+    public void setWhite(){
+        red = 255;
+        green = 255;
+        blue = 255;
     }
 
     public void setGrass(){
@@ -1593,33 +1608,34 @@ class Colour {
     public boolean isBlue(){
         return blue == 255 && green == 191 && red == 0;
     }
+
+
     public boolean isLake(){
         return blue == 255 && green == 191 && red == 144;
     }
 }
 
-//help store and manage two data fields together,
-//used for the properties of the tree
-class Structure2 {
-    int first, second; //y pos, x pos
-    public Structure2(){
+//two variables together (pair int int), for trees
+class pii{
+    int first, second;
+    public pii(){
         first = 0;
         second = 0;
     }
-    public Structure2(int a, int b){
+    public pii(int a, int b){
         first = a;
         second = b;
     }
 }
 
-//help store and manage five data fields together
-class Structure5 {
-    int first, second, third, fourth, health; //y pos, x pos, next y pos, next x pos, and the health
-    public Structure5(){
+//five variables together
+class piiiii {
+    int first, second, third, fourth, health;
+    public piiiii(){
         first = 0;
         second = 0;
     }
-    public Structure5(int a, int b, int c, int d, int hp){
+    public piiiii(int a, int b, int c, int d, int hp){
         first = a;
         second = b;
         third = c;
@@ -1628,12 +1644,11 @@ class Structure5 {
     }
 }
 
-//help store and manage six data fields together
-//used for beedrills
-class Structure6 {
-    int first, second, third, fourth, health; //y pos, x pos, next y pos, next x pos, and the health
-    boolean fifth; //if a beedrill should be approaching closest tree or should be looking for another tree
-    public Structure6(){
+//six variables together
+class piiiiii {
+    int first, second, third, fourth, health;
+    boolean fifth;
+    public piiiiii(){
         first = 0;
         second = 0;
         third = 0;
@@ -1641,7 +1656,7 @@ class Structure6 {
         fifth = true;
         health = 100;
     }
-    public Structure6(int a, int b, int c, int d, boolean e, int hp){
+    public piiiiii(int a, int b, int c, int d, boolean e, int hp){
         first = a;
         second = b;
         third = c;
@@ -1651,12 +1666,10 @@ class Structure6 {
     }
 }
 
-//stores seven variables together
-//used for growlithes
-class Structure7 {
-    //y pos, x, pos, delta y, delta x, how long a growlithe has been near water for, which quadrant its in, and its health
+//seven variables together
+class piiiiiii {
     int first, second, diry, dirx, wait, quad, health;
-    public Structure7(){
+    public piiiiiii(){
         first = 0;
         second = 0;
         diry = 0;
@@ -1665,7 +1678,7 @@ class Structure7 {
         quad = 1;
         health = 100;
     }
-    public Structure7(int a, int b, int c, int d, int e, int f, int g){
+    public piiiiiii(int a, int b, int c, int d, int e, int f, int g){
         first = a;
         second = b;
         diry = c;

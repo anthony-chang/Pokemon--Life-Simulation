@@ -16,18 +16,21 @@ class WorkingInventory extends JFrame {
     static Inventory inventory = new Inventory ();
     static Image grassBackground, inventoryHeader, pokeballIcon, remainingHeader; //images needed for display
     static Image [] digitPNGs = new Image [10]; //array of 10 digits, and number 10 (in the specific font)
+    static int pokeballsRemaining; //number of pokeballs remaining
     BtnListener btnListener = new BtnListener ();
     private int positionToView;
     private int loc[] = {-5, -4, -3, -2, 2, 3, 4, 5};
 
     //======================================================== constructor
     public WorkingInventory () {
+        pokeballsRemaining = 0; //defaults to no pokeballs remaining
 
         //loading images for display
         try {
             inventoryHeader = ImageIO.read (new File ("Graphics\\inventory text.png"));
             grassBackground = ImageIO.read (new File ("Graphics\\grassBackground.png"));
             pokeballIcon = ImageIO.read (new File ("Graphics\\pokeball icon.png"));
+            remainingHeader = ImageIO.read (new File ("Graphics\\remaining text.png"));
             // load file into Image object
             for (int i = 0; i<10; i++) {
                 digitPNGs [i] = ImageIO.read (new File ("Graphics\\"+ i + " text.png"));
@@ -66,29 +69,23 @@ class WorkingInventory extends JFrame {
                 int yPlayer = Pokemon.player.getY()/4;
                 int px = loc[(int) (Math.random()*8)];
                 int py = loc[(int) (Math.random()*8)];
-
-                //adds specified pokemon back into map next to the player with a few randomly specified characteristics
                 if (inventory.getName(positionToView).equals("Growlithe")){
-                    LifeSimulation.colony.growLoc.add(new Structure7(yPlayer+py, xPlayer+px, (int) (Math.random() * 2+2), (int) (Math.random() * 2 + 2), 0, 3, inventory.getHealth(positionToView)));
+                    LifeSimulation.colony.growLoc.add(new piiiiiii(yPlayer+py, xPlayer+px, (int) (Math.random() * 2+2), (int) (Math.random() * 2 + 2), 0, 3, inventory.getHealth(positionToView)));
                 }
                 else if (inventory.getName(positionToView).equals("Squirtle")){
                     int randomx = (int) (Math.random()*251);
                     int randomy = (int) (Math.random()*161);
-                    LifeSimulation.colony.squirtleLoc.add(new Structure5(yPlayer+py, xPlayer+px, randomy, randomx, inventory.getHealth(positionToView)));
+                    LifeSimulation.colony.squirtleLoc.add(new piiiii(yPlayer+py, xPlayer+px, randomy, randomx, inventory.getHealth(positionToView)));
                 }
                 else if (inventory.getName(positionToView).equals("Beedrill")){
-                    LifeSimulation.colony.beeLoc.add(new Structure6(yPlayer+py, xPlayer+px, yPlayer+py, xPlayer+px, true, inventory.getHealth(positionToView)));
+                    LifeSimulation.colony.beeLoc.add(new piiiiii(yPlayer+py, xPlayer+px, yPlayer+py, xPlayer+px, true, inventory.getHealth(positionToView)));
                 }
                 else if (inventory.getName(positionToView).equals("Gastly")){
-                    LifeSimulation.colony.gasLoc.add(new Structure5(yPlayer+py, xPlayer+px, 90, 135, inventory.getHealth(positionToView)));
+                    LifeSimulation.colony.gasLoc.add(new piiiii(yPlayer+py, xPlayer+px, 90, 135, inventory.getHealth(positionToView)));
                 }
-
-                //repaints map and invntory
                 Pokemon.environment.repaint();
                 removePokeFromInventory(positionToView);
                 repaint();
-
-                //closes JOptionPane
                 JOptionPane.getRootFrame().dispose();
             }
             repaint (); // do after each action taken to update deck
@@ -179,7 +176,12 @@ class WorkingInventory extends JFrame {
             g.drawImage (inventoryHeader, 205, 30, 365, 75, null); //inventory titel at top  **original image (pixel) size: 994x185
 
             //for pokeballs remaining at bottom
-            g.drawImage (pokeballIcon, 350, 545, 45, 45, null); //pokeball icon for pokeballs remaining, bottom
+            g.drawImage (pokeballIcon, 200, 545, 45, 45, null); //pokeball icon for pokeballs remaining, bottom
+            char [] digits = Integer.toString(pokeballsRemaining).toCharArray(); //array of chars (first index has first digit of pokeballsRemaining, second index has second digit, etc.)
+            for (int i = 0; i<digits.length; i++) {
+                g.drawImage(digitPNGs[digits[i] - '0'], 260 + 50*i, 550, 34, 51, null);
+            }
+            g.drawImage (remainingHeader, 260 + 50*digits.length, 550, 265, 45, null); //"remaining", printed after number of pokeballsRemaining
 
             //numbering the pokemon
             for (int i = 0; i<6; i++) {
@@ -214,6 +216,10 @@ class Inventory {
     Random random = new Random();
     public Inventory () {
         pokemon = new ArrayList <> ();
+        /*for (int i = 0; i<6; i++) {
+            int type = random.nextInt(6) + 1;
+            pokemon.add(new CaughtPokemon (type));
+        }*/
     }
     public void remove (int placement) {//placement will be 0-5
         pokemon.remove(placement);
@@ -226,16 +232,17 @@ class Inventory {
         pokemon.set(pokemon1, pokemon.get(pokemon2));
         pokemon.set(pokemon2, temp);
     }
-    public int inventorySize () { //return how many pokemon in inventory
+    public int inventorySize ()
+    {
         return pokemon.size();
     }
-    public String getName (int position) { //return name of the pokemon in x position
+    public String getName (int position) {
         return pokemon.get(position).getName();
     }
-    public int getHealth (int position) { //health of the pokemon in x position
+    public int getHealth (int position) {
         return pokemon.get(position).getLife();
     }
-    public JButton showLife (int positionToView) { //color and healthbar
+    public JButton showLife (int positionToView) {
         JButton returnButton = new JButton ("HP: " + pokemon.get(positionToView).getLife());
 
         if (pokemon.get(positionToView).getLife()>70) returnButton.setBackground(new Color (50, 245, 101)); //healthy
@@ -247,8 +254,10 @@ class Inventory {
     public Image image (int positionToView) {
         return pokemon.get(positionToView).getFace();
     }
-    public void show (Graphics g) {
-        for (int i = 0; i<pokemon.size(); i++) {
+    public void show (Graphics g)
+    {
+        for (int i = 0; i<pokemon.size(); i++)
+        {
             int y;
             if (i<=2) {
                 y = 40;
@@ -271,7 +280,6 @@ class CaughtPokemon {
         this.type = type;
         life = health;
 
-        //label the pokemon types with numbers, some types are unused
         if (type == 1) name = "Dragonair";
         else if (type == 2) name = "Squirtle";
         else if (type == 3) name = "Beedrill";
@@ -285,15 +293,24 @@ class CaughtPokemon {
         }
         catch (IOException e) {}
 
-        if (type == 1||type==2||type==4||type==5) { //which pokemon can fly over water
+        if (type == 1||type==2||type==4||type==5)
+        {
             fly = false;
         } else if (type == 3||type == 6)
         {
             fly = true;
         }
     }
+    public void hurt (int hurt) {
+        life = life - hurt;
+        if (life<0) life = 0;
+    }
+    public void heal (int heal) {
+        life = life + heal;
+        if (life>100) life = 100;
+    }
 
-    //for access, self explanatory
+    //for access
     public int getLife () {
         return life;
     }

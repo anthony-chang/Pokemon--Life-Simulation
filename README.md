@@ -1,5 +1,7 @@
 # Pokemon: Life-Simulation
  A Pokemon game inspired by Conway's Game of LIfe. Created for an ICS project in grade 11.
+ 
+ Developer guide found [here.](https://docs.google.com/document/d/1_vzKa1IXUmjHE51Q5V_yHW4ps7rV7HLbjJ6k8_2RCOo/edit?usp=sharing)
 
 ## User Guide
 
